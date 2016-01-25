@@ -65,10 +65,8 @@ system(qq{bwa sampe $contigs_fasta $sai_1 $sai_2 $fq_1 $fq_2 - > $contig_sam});
 
 system(qq{samtools view -Sb -o $cleaned_bam $cleaned_sam});
 
-system(qq{/opt/linux/centos/7.x/x86_64/pkgs/sga/0.10.14/bin/sga-bam2de.pl -n $min_pairs --prefix $run_id $clean
-ed_sam});
-system(qq{/opt/linux/centos/7.x/x86_64/pkgs/sga/0.10.14/bin/sga-astat.py -m $min_contig_len $cleaned_bam > $ast
-at});
+system(qq{sga-bam2de.pl -n $min_pairs --prefix $run_id $cleaned_sam});
+system(qq{sga-astat.py -m $min_contig_len $cleaned_bam > $astat});
 system(qq{sga scaffold -m $min_contig_len -a $astat -o $scaffold --pe $de $contigs_fasta});
 system(qq{sga scaffold2fasta --use-overlap --write-unplaced -m $min_contig_len -a $graph -r $read_len -o $scaff
 old_fasta $scaffold});
