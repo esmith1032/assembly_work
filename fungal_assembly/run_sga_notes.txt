@@ -1,0 +1,12 @@
+The perl scripts I've set up to run SGA are called via a shell script:
+
+  module load sga
+  module load ABYSS
+
+  perl run_sga_fungal_assembly_raw_data.pl ##perl run_sga_fungal_assembly_processed_data.pl to run on the preprocessed/trimmed data
+
+which is then submitted: 'qsub run_sga_raw_data.sh -l mem=512gb -q highmem' (or run_sga_processed_data.sh for preprocessed/trimmed data)  
+
+The perl scripts are set up to call the SGA subprograms based on the framework here: https://github.com/jts/sga/blob/master/src/examples/sga-celegans.sh
+Currently, all of the parameters are set to the default, but can be easily changed using the variables at the top of the script
+When SGA is installed, one script (/opt/linux/centos/7.x/x86_64/pkgs/sga/0.10.14/bin/sga-align) doesn't get installed with the default installation, so I use a number of BWA steps to replace that script
