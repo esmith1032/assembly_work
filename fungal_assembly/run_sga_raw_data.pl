@@ -8,7 +8,7 @@ my $trim_len = 150;
 my $min_contig_len = 50;
 my $min_pairs = 5;
 
-my $work_dir = '/bigdata/bioinfo/esmit013/fungal_assembly';
+my $work_dir = '/bigdata/bioinfo/esmit013/fungal_assembly/sga_raw_data';
 
 chdir $work_dir;    
 
@@ -44,8 +44,8 @@ system(qq{sga index -a ropebwt -t 8 --no-reverse $preprocess_fq});
 system(qq{sga correct -k $correction_k --learn -t 8 -o $error_cor_fq $preprocess_fq});
 
 ##Contig assembly
-system(qq{sga index -a ropebwt $error_cor_fq 2>&1 >> $log});
-system(qq{sga filter -x 2 -t 8 --homopolymer_check --low_complexity_check -o $filtered_fasta $error_cor_fq});
+system(qq{sga index -a ropebwt $error_cor_fq});
+system(qq{sga filter -x 2 -t 8 -o $filtered_fasta $error_cor_fq});
 system(qq{sga fm_merge -m $min_overlap -t 8 -o $merge_file $filtered_fasta});
 system(qq{sga index -d 1000000 -t 8 $merge_file});
 system(qq{sga rmdup -t 8 $merge_file});
@@ -61,9 +61,9 @@ system(qq{bwa aln $contigs_fasta $fq_1 > $sai_1});
 system(qq{bwa aln $contigs_fasta $fq_2 > $sai_2});
 system(qq{bwa sampe $contigs_fasta $sai_1 $sai_2 $fq_1 $fq_2 - > $contig_sam});
 
-system(qq{samtools view -Sb -o $cleaned_bam $cleaned_sam});
+system(qq{samtools view -Sb -o $cleaned_bam $contig_sam});
 
-system(qq{sga-bam2de.pl -n $min_pairs --prefix $run_id $cleaned_sam});
+system(qq{sga-bam2de.pl -n $min_pairs --prefix $run_id $contig_sam});
 system(qq{sga-astat.py -m $min_contig_len $cleaned_bam > $astat});
 system(qq{sga scaffold -m $min_contig_len -a $astat -o $scaffold --pe $de $contigs_fasta});
 system(qq{sga scaffold2fasta --use-overlap --write-unplaced -m $min_contig_len -a $graph -r $read_len -o $scaffold_fasta $scaffold});
