@@ -9,7 +9,7 @@ my ($data_type) = @ARGV;
 my $base_dir = '/bigdata/bioinfo/esmit013/fungal_assembly/soap_' . $data_type . '_data/';
 my $config_file = $base_dir . 'soap.config';
 
-for (my $k = 51; $k <= 91; $k += 4)
+for (my $k = 51; $k <= 99; $k += 4)
   {
   my $k_dir = $base_dir . 'k_' . $k . '/';
   if (-d $k_dir)
