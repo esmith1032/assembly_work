@@ -12,8 +12,6 @@ my $work_dir = '/bigdata/bioinfo/esmit013/fungal_assembly/sga_processed_data';
 
 chdir $work_dir;    
 
-my $read_len = 100;
-
 my $fq_1 = $work_dir . '/flowcell271_lane5_pair1_val_1.fq';
 my $fq_2 = $work_dir . '/flowcell271_lane5_pair3_val_2.fq';
 
@@ -68,5 +66,4 @@ system(qq{samtools view -Sb -o $cleaned_bam $contig_sam});
 system(qq{sga-bam2de.pl -n $min_pairs --prefix $run_id $contig_sam});
 system(qq{sga-astat.py -m $min_contig_len $cleaned_bam > $astat});
 system(qq{sga scaffold -m $min_contig_len -a $astat -o $scaffold --pe $de $contigs_fasta});
-system(qq{sga scaffold2fasta --use-overlap --write-unplaced -m $min_contig_len -a $graph -r $read_len -o $scaff
-old_fasta $scaffold});
+system(qq{sga scaffold2fasta --use-overlap --write-unplaced -m $min_contig_len -a $graph -o $scaffold_fasta $scaffold});
