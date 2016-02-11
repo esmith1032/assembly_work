@@ -23,7 +23,6 @@ if ($data_type eq 'raw')
   }
 
 my $run_id = 'fungal_assembly_'. $data_type . '_data';
-my $p = $work_dir . '/' . $run_id;
 my $preprocess_fq = $work_dir . '/' . $run_id . '_pp.fq'; 	
 my $error_cor_fq = $work_dir . '/' . $run_id . '_ec.fq'; 	
 my $filtered_fasta = $work_dir . '/' . $run_id . '_filtered.fasta'; 
@@ -46,14 +45,14 @@ my $scaffold_fasta = $work_dir . '/' . $run_id . '_scaffolds.fasta';
 
 ##Error Correction
 system(qq{sga preprocess --pe-mode 1 -o $preprocess_fq $fq_1 $fq_2});
-system(qq{sga index -a ropebwt -t 8 --no-reverse $preprocess_fq -p $p});
+system(qq{sga index -a ropebwt -t 8 --no-reverse $preprocess_fq});
 system(qq{sga correct -k $correction_k --learn -t 8 -o $error_cor_fq $preprocess_fq});
 
 ##Contig assembly
-system(qq{sga index -a ropebwt $error_cor_fq -p $p});
+system(qq{sga index -a ropebwt $error_cor_fq});
 system(qq{sga filter -x 2 -t 8 -o $filtered_fasta $error_cor_fq});
 system(qq{sga fm-merge -m $min_overlap -t 8 -o $merge_file $filtered_fasta});
-system(qq{sga index -d 1000000 -t 8 $merge_file -p $p});
+system(qq{sga index -d 1000000 -t 8 $merge_file});
 system(qq{sga rmdup -t 8 $merge_file});
 system(qq{sga overlap -m $min_overlap $merge_file});
 system(qq{sga assemble -r 25 -g .05 -m $assemble_overlap --min-branch-length $trim_len -o $run_id $assembly_gz});
@@ -61,7 +60,7 @@ system(qq{sga assemble -r 25 -g .05 -m $assemble_overlap --min-branch-length $tr
 ##Scaffolding
 ##The following BWA steps are done in place of using sga-align, as sga-align does not install with the default SGA installation
 system(qq{bwa index $contigs_fasta});
-system(qq{bwa mem -t 2 -k 10 $contigs_fasta $fq_1 $fq_2 > $contig_sam});  
+system(qq{bwa mem -t 8 -k 10 $contigs_fasta $fq_1 $fq_2 > $contig_sam});  
 
 system(qq{bwa aln $contigs_fasta $fq_1 > $sai_1});
 system(qq{bwa aln $contigs_fasta $fq_2 > $sai_2});
