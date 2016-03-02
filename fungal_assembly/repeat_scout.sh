@@ -17,7 +17,7 @@ module load nseg
 
 build_lmer_table -l 15 -sequence $genome_file -freq $freq_file -v 
 RepeatScout -sequence $genome_file -output $repeat_file -freq $freq_file -l 15
-##cat $repeat_file | filter-stage-1.prl > $filtered1_repeat_file
-RepeatMasker -s -lib $filtered1_repeat_file $genome_file
+cat $repeat_file | filter-stage-1.prl > $filtered1_repeat_file
+RepeatMasker -pa 16 -s -lib $filtered1_repeat_file $genome_file
 cat $filtered1_repeat_file | filter-stage-2.prl --cat $genome_out_file --thresh 10 > $filtered2_repeat_file
-RepeatMasker -pa 4 -s -lib $filtered2_repeat_file -nolow -norna -no_is -gff $genome_file
+RepeatMasker -pa 16 -s -lib $filtered2_repeat_file -nolow -norna -no_is -gff $genome_file
