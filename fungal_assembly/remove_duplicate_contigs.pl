@@ -27,6 +27,8 @@ while (my $line = <FASTA>)
     $body .= $line;  
     }    
   }
+$scaffolds{$head}{seq} = $body;
+$scaffolds{$head}{len} = length($body);
 close FASTA;
 
 my $new_file = '/bigdata/bioinfo/esmit013/fungal_assembly/repeat_scout_no_dups/merged_assembly_no_dups.fasta';
