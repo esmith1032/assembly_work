@@ -50,7 +50,7 @@ q';
       $raw_total_length += length($raw_line);   
       }      
     }
-
+  push @raw_lengths, $current_raw_length;
   while (my $processed_line = <PROCESSED>)
     {
     chomp $processed_line;
@@ -70,7 +70,7 @@ q';
       $processed_total_length += length($processed_line);   
       }      
     }
-
+  push @processed_lengths, $current_processed_length;
   my $raw_n50;
   my $raw_len_sum = 0;
   RAW_N50_LOOP: foreach my $raw_len (sort{$a <=> $b} values @raw_lengths)
