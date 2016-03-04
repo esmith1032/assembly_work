@@ -64,7 +64,6 @@ foreach my $fasta (values @fastas)
     $line_count += 1;
     if ($line =~ /^>/)
       {
-      $total_contigs += 1;
       unless ($line_count == 1)
         {
         foreach my $length (0, 500, 1000, 5000, 10000)
@@ -82,9 +81,17 @@ foreach my $fasta (values @fastas)
     else
       {
       $current_length += length($line);
-      $total_length += length($line);   
       }      
     }
+  foreach my $length (0, 500, 1000, 5000, 10000)
+    {
+    if ($current_length > $length)
+      {
+      push (@{$lengths{$length}}, $current_length);
+      $contigs{$length} += 1;
+      $cum_length{$length} += $current_length;
+      }
+    }  
   close FASTA;               
   my %n50;
   my %n90;
@@ -106,7 +113,7 @@ foreach my $fasta (values @fastas)
 
   my $sum_file = "${base_dir}/${assembler}_${data_type}_${construct}_summary_stats.txt";
   open SUMMARY, ">$sum_file";  
-  print SUMMARY "Number of sequences\t$total_contigs\nMaximum sequence length (bp)\t$max_length\nAverage length (bp)\t$avg_lengths{0}\nN50 (bp)\t$n50{0}\nN90 (bp)\t$n90{0}\n";
+  print SUMMARY "Number of sequences\t$contigs{0}\nMaximum sequence length (bp)\t$max_length\nAverage length (bp)\t$avg_lengths{0}\nN50 (bp)\t$n50{0}\nN90 (bp)\t$n90{0}\n";
   print SUMMARY "\nSequences > 500bp\n\n";
   print SUMMARY "Number of sequences\t$contigs{500}\nAverage length (bp)\t$avg_lengths{500}\nN50 (bp)\t$n50{500}\nN90 (bp)\t$n90{500}\n";
   print SUMMARY "\nSequences > 1Kb\n\n";
@@ -116,7 +123,7 @@ foreach my $fasta (values @fastas)
   print SUMMARY "\nSequences > 10Kb \n\n";
   print SUMMARY "Number of sequences\t$contigs{10000}\nAverage length (bp)\t$avg_lengths{10000}\nN50 (bp)\t$n50{10000}\nN90 (bp)\t$n90{10000}\n";
   close SUMMARY;
-  print STDOUT "${assembler}_${data_type}_${construct}: $total_length\n";
+  print STDOUT "${assembler}_${data_type}_${construct}: $cum_length{0}\n";
   }
 
 sub get_stats
