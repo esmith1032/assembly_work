@@ -1,0 +1,2 @@
+SignalP can't handle very large inputs, so I split my protein fasta in half and ran each half seperately.
+The output is an easily parsed gff file. (see get_signal_peptides.pl)
