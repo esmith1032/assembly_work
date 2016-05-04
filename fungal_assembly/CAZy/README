@@ -1,0 +1,2 @@
+CAZy uses a web interface to annotate CAZy enzymes in genomes. Genomes can be uploaded to: http://csbl.bmb.uga.edu/dbCAN/annotate.php and the results downloaded.
+The scripts here are what I used to parse the output and create heatmaps of the results.
