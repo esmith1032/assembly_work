@@ -1,0 +1,1 @@
+I mainly use this to create the .xml file needed to load the BLAST results into BLAST2Go. The -outfmt 5 option produces the necessary .xml file. The blast against the Uniprot database provides better results to use for manual annotation, as the proteins there are validated in multiple ways.
