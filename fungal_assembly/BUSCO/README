@@ -1,0 +1,2 @@
+BUSCO is pretty straightforward. There are some weird permissions issues I had with the script on biocluster, so I just copied the busco python script to my scripts directory.
+You must have the correct hmm profile (in this case eukaryota) in the current working directory. These can be downloaded from the busco website. 
