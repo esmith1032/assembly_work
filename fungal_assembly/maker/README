@@ -1,0 +1,22 @@
+A few notes:
+
+There are two modules on biocluster with the name snap.
+One is a read-mapping program (snap) and the other is the gene prediction program we need (SNAP).
+MAKE SURE TO LOAD THE CORRECT ONE (the one in all caps).
+
+The three files with .ctl extensions are required to be in the current working directory for MAKER to run appropriately.
+These can be created using the command: maker CTL
+
+The above command will populate all of the paths in the maker_exe.ctl file, provided all of the required modules are loaded when the command is run.
+Otherwise, these can be populated manually.
+
+The maker_opts.ctl file has many options for inputting different sources of information for gene model validation.
+The ones I used were:
+
+genome=path/to/genome/file (required)
+organism_type=eukaryotic (required)
+altest=path/to/alternate/est/data (I used EST [or RNAseq] data from a closely related organism)
+protein=path/to/protein/fasta (I concatenated all published proteome fastas from species in the same genus)
+snaphmm=path/to/snap/hmm/file (I used the minimal.hmm available on the snap website)
+gmhmm=path/to/genemark/hmm (I had previously created a genemark hmm file from this genome for genemark self-training [I will update with that script])
+augustus_species=species_name (I picked the most closely related species I could find. These files are located in the augustus package directory [/opt/linux/centos/7.x/x86_64/pkgs/augustus/3.1/config/species])
