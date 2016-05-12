@@ -34,6 +34,6 @@ orthomclPairs $config_file $logfile cleanup=no
 
 orthomclDumpPairsFiles $config_file
 
-mcl $mcl_input -o $mcl_output -te 32
+mcl $mcl_input --abc -I 1.5 -o $mcl_output -te 32
 
 orthomclMclToGroups pythium 1000 < $mcl_output > $groups
